@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import CarTripForm from './CarTripForm';
+import Results from './Results';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    const dummyData = {winnerString: 'You should Fly',
+		       carTripString: 'Car emissions: 105Mtons',
+		       flightString: 'Flight emissions: 85Mtons'};
+  
+    return (
+	<div>
+	    <div>
+		<CarTripForm />
+	    </div>
+	    <div>
+		<Results resultsData={dummyData}
+		/>
+	    </div>
+	</div>
+    );
 }
 
 export default App;
+	    
