@@ -1,25 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import Select from 'react-select';
-
-const initValues = { yearsList: '',
-		     makesList: '',
-		     IDsList: '',
-                     startCity: '',
-		     destCity: '',
-		     carYear: '',
-		     carMake: '',
-		     carModel: '',
-		     carID: ''};
+import React, { useState, useEffect } from 'react'; // useRef?
 
 const CarTripForm = ({ submitCB }) => {
-    const [state, setState] = useState('');
     const [yearsList, setYearsList] = useState('');
     const [makesList, setMakesList] = useState('');
     const [modelsList, setModelsList] = useState('');
     const [IDsList, setIDsList] = useState(''); 
     
-    const [startCity, setStartCity] = useState('');
-    const [destCity, setDestCity] = useState('');
+    const [cities, setCities] = useState({start: '',
+					  end: ''});
     const [carYear, setCarYear] = useState('');
     const [carMake, setCarMake] = useState('');
     const [carModel, setCarModel] = useState('');
@@ -100,6 +88,14 @@ const CarTripForm = ({ submitCB }) => {
 		    });
 	    });
     }
+
+    const handleCityChange = (event) => {
+	const {name, value} = event.target;
+	setCities({
+	    ...cities,
+	    [name]: value
+	});
+    }
     
     const handleYearChange = (event) => {
 	const {name, value} = event.target;
@@ -130,10 +126,9 @@ const CarTripForm = ({ submitCB }) => {
 	setCarID(value);
     };
 
-    const handleSubmit = () => {
-	alert(carID);
-	submitCB(state);
-	setState(initValues);
+    const handleSubmit = (event) => {
+	event.preventDefault();
+	submitCB(cities.start, cities.end, carID);
     };
 
     useEffect(() => {
@@ -144,11 +139,11 @@ const CarTripForm = ({ submitCB }) => {
 	<form onSubmit={handleSubmit}>
 	    <label>
 		Start City:
-		<input type="text" name="startCity" value={state.startCity} />
+		<input type="text" name="start" value={cities.start} onChange={handleCityChange} />
 	    </label>
 	    <label>
 		Destination City:
-		<input type="text" name="destCity" value={state.destCity} />
+		<input type="text" name="end" value={cities.end} onChange={handleCityChange} />
 	    </label>
 	    <label>
 		Car Model Year:
@@ -158,19 +153,19 @@ const CarTripForm = ({ submitCB }) => {
 	    </label>
 	    <label>
 		Car Make:
-		<select name="carMake" value={state.carMake} onChange={handleMakeChange}>
+		<select name="carMake" value={carMake} onChange={handleMakeChange}>
 		    { makesList }
 		</select>
 	    </label>
 	    <label>
 		Car Model:
-		<select name="carModel" value={state.carModel} onChange={handleModelChange}>
+		<select name="carModel" value={carModel} onChange={handleModelChange}>
 		    { modelsList }
 		</select>
 	    </label>
 	    <label>
 		Car Trim:
-		<select name="carID" value={state.carID} onChange={handleTrimChange}>
+		<select name="carID" value={carID} onChange={handleTrimChange}>
 		    { IDsList }
 		</select>
 	    </label>
